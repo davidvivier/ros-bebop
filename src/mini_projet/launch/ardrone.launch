@@ -1,0 +1,9 @@
+<launch>
+
+    <include file="$(find bebop_driver)/launch/bebop_node.launch" />
+
+    <node pkg="mini_projet" name="controller" type="control.py" />
+    <node pkg="joy" name="joy_node" type="joy_node" />
+    <node pkg="rqt_gui" name="rqt_gui" type="rqt_gui" />
+    
+</launch>
