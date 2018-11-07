@@ -2,7 +2,14 @@
 
 import rospy
 from std_msgs.msg import String
+from std_msgs.msg import Empty
 from sensor_msgs.msg import Joy
+
+BTN_EMERGENCY = 2
+BTN_TAKEOFF = 5
+BTN_LAND = 4
+
+resetPub = rospy.Publisher('bebop/reset', Empty, queue_size=10)
 
 def controller():
 
@@ -15,12 +22,19 @@ def controller():
 
     rospy.Subscriber('/joy', Joy, callback)
 
+    
+
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
 
 def callback(data):
     joy = data
-    rospy.loginfo(rospy.get_caller_id() + 'I heard %s', str(joy.buttons[0]))
+    rospy.loginfo(rospy.get_caller_id() + 'I heard %s', str(joy.buttons[BTN_EMERGENCY]))
+
+    if joy.buttons[BTN_EMERGENCY] == 1:
+        resetPub.publish()
+
+
 
 if __name__ == '__main__':
     try:
