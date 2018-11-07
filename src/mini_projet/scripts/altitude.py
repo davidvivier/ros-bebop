@@ -54,17 +54,6 @@ def listener():
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
 
-def talker():
-
-    pub = rospy.Publisher('/altitude', String, queue_size=10)
-    # rospy.init_node('talker', anonymous=True)
-    rate = rospy.Rate(10) # 10hz
-    while not rospy.is_shutdown():
-        hello_str = "hello world %s" % rospy.get_time()
-        rospy.loginfo(hello_str)
-        pub.publish(hello_str)
-        rate.sleep()
-
 
 def callback(data):
     # on recoit un message AltitudeChanged
@@ -73,6 +62,9 @@ def callback(data):
     altitudeChanged = data
     altitude = altitudeChanged.altitude
     rospy.loginfo(rospy.get_caller_id() + 'Altitude : %f', altitude)
+    pub = rospy.Publisher('/altitude', String, queue_size=10)
+    #rate = rospy.Rate(10) # 10hz
+    pub.publish(str(altitude))
 
 
 
